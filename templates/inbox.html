@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'partials/google-analytics.html' %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GatorGoods Inbox</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/inbox.css') }}">
+</head>
+<body>
+    {% include 'partials/header-profile.html' %}
+
+    <main class="inbox-page">
+        <section class="conversation-list">
+            <div class="conversation-list-top">
+                <a href="dashboard.html" class="back-button">Back</a>
+            </div>
+
+            {% for convo in conversations %}
+                <a
+                    href="{{ url_for('inbox', conversation_id=convo.id) }}"
+                    class="conversation-item {% if selected_conversation and convo.id == selected_conversation.id %}selected{% endif %}"
+                >
+                    <div class="conversation-avatar"></div>
+
+                    <div class="conversation-text">
+                        <h3>{{ convo.other_user_name }}</h3>
+                        <p>{{ convo.preview }}</p>
+                    </div>
+
+                    <div class="conversation-status {% if convo.unread %}filled{% else %}empty{% endif %}"></div>
+                </a>
+            {% endfor %}
+        </section>
+
+        <section class="chat-panel">
+            {% if selected_conversation %}
+                <div class="chat-header">
+                    <div class="chat-user-avatar"></div>
+                    <h2>{{ selected_conversation.other_user_name }}</h2>
+                </div>
+
+                <div class="chat-messages">
+                    {% for message in messages %}
+                        {% if message.is_from_current_user %}
+                            <div class="message-row right">
+                                <div class="message-bubble medium">
+                                    {{ message.content }}
+                                </div>
+                                <div class="message-avatar"></div>
+                            </div>
+                        {% else %}
+                            <div class="message-row left">
+                                <div class="message-avatar"></div>
+                                <div class="message-bubble short">
+                                    {{ message.content }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <form class="chat-input-bar" method="post" action="/message/{{ selected_conversation.id }}">
+                    <input type="hidden" name="conversation_id" value="{{ selected_conversation.id }}">
+
+                    <input
+                        type="text"
+                        name="content"
+                        class="message-input"
+                        placeholder="Please type your message here....."
+                    >
+
+                    <button type="submit" class="icon-button send-button">&#10148;</button>
+                </form>
+            {% else %}
+                <div class="chat-header">
+                    <div class="chat-user-avatar"></div>
+                    <h2>No conversation selected</h2>
+                </div>
+
+                <div class="chat-messages empty-chat">
+                    <p>Select a chat to view messages.</p>
+                </div>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

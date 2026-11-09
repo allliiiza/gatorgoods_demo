@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'partials/google-analytics.html' %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - GatorGoods</title>
+
+    <link rel="stylesheet" href="../static/styles/main.css">
+    <link rel="stylesheet" href="../static/styles/profile.css">
+</head>
+<body>
+    {% include 'partials/header-profile.html' %}
+
+    <main id="profile-page">
+        <section id="profile-panel">
+
+            <div id="profile-top">
+                <div id="moderator-buttons">
+                    <button type="button" id="report-user-btn" onclick="openModal('report-user-modal')">
+                        Report User
+                    </button>
+                    {% if current_user.is_moderator %}
+                    <button type="button" id="ban-user-btn" onclick="openModal('ban-user-modal')">
+                        Ban User
+                    </button>
+                    {% endif %}
+                </div>
+                <div id="profile-center">
+                    <img src="{{ user.profile_image_path or '../static/images/profile-placeholder.png' }}" id="profile-avatar" alt="Profile avatar">
+                    <h1>{{ user.display_name }}</h1>
+                    <p id="profile-bio">{{ user.bio }}</p>
+                </div>
+
+                <div id="review-buttons">
+                    <button type="button" id="profile-ratings" onclick="openModal('reviews-modal')">
+                        <div id="stars">
+                            {% for i in range(user.rating|round|int) %}★ {% endfor %}
+                            {% for i in range((5 - user.rating)|round|int) %}☆ {% endfor %}</div>
+                        <p>Reviews/Ratings</p>
+                    </button>
+
+                    <button type="button" id="write-review-btn" onclick="openModal('write-review-modal')">
+                        Write a Review
+                    </button>
+
+                </div>
+            </div>
+
+            <section id="profile-listings">
+
+                {% for listing in user.listings %}
+                <button type="button" class="profile-card"
+                    onclick="openListingModal(
+                    '{{ listing.title }}',
+                    '${{ listing.price|round|int }}',
+                    '{{ listing.top_image_path }}',
+                    '{{ listing.description }}')">
+
+                    <img src="{{ listing.top_image_path }}"
+                         class="profile-card-image"
+                         alt="Air Fryer">
+
+                    <h2>{{ listing.title }}</h2>
+                    <p>${{ listing.price|round|int }}</p>
+                </button>
+                {% endfor %}
+
+            </section>
+
+        </section>
+    </main>
+
+    <!-- LISTING MODAL -->
+
+    <div id="listing-modal" class="modal">
+
+        <div class="modal-box listing-modal-box">
+
+            <button class="close-btn"
+                    type="button"
+                    onclick="closeModal('listing-modal')">×</button>
+
+            <div id="listing-modal-content">
+
+                <img id="modal-listing-image"
+                     src=""
+                     alt="Listing image">
+
+                <div id="modal-listing-info">
+
+                    <h2 id="modal-listing-title">Listing Name</h2>
+
+                    <h3 id="modal-listing-price">$0</h3>
+
+                    <p id="modal-listing-description">
+                        Item description goes here.
+                    </p>
+
+                    <br /><br />
+
+                    <p id="modal-listing-link">
+                        Link to item goes here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- REVIEWS MODAL -->
+
+    <div id="reviews-modal" class="modal">
+
+        <div class="modal-box reviews-box">
+
+            <button class="close-btn"
+                    type="button"
+                    onclick="closeModal('reviews-modal')">×</button>
+
+            <h2>User Reviews</h2>
+
+            {% for review in reviews %}
+
+            <div class="review-card">
+                <div class="review-stars">
+                    {% for i in range(review.score|int) %}★ {% endfor %}
+                    {% for i in range(5 - review.score|int) %}☆ {% endfor %}
+                </div>
+                <h3>{{ review.title }}</h3>
+                <p>{{ review.review_text }}</p>
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+
+    <!-- WRITE REVIEW MODAL -->
+
+    <div id="write-review-modal" class="modal">
+
+        <form class="modal-box write-review-box"
+              action="reviews/{{ user.id }}"
+              method="post">
+
+            <button class="close-btn"
+                    type="button"
+                    onclick="closeModal('write-review-modal')">×</button>
+
+            <h2>Write a Review</h2>
+
+            <label for="review-user">
+                Title:
+            </label>
+
+            <input id="review-title"
+                   name="review_title"
+                   type="text"
+                   placeholder="Enter title">
+
+            <label>Rating:</label>
+
+            <div class="star-select">
+
+                <input type="radio" id="star5" name="rating" value="5">
+                <label for="star5">★</label>
+
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4">★</label>
+
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3">★</label>
+
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2">★</label>
+
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1">★</label>
+
+            </div>
+
+            <label for="review-text">Review:</label>
+
+            <textarea id="review-text"
+                      name="review_text"
+                      maxlength="265"
+                      placeholder="Write your review here..."
+                      oninput="updateCharCount()"></textarea>
+
+            <p id="char-count">0/265</p>
+
+            <button class="submit-review-btn"
+                    type="submit">
+
+                Submit Review
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- REPORT USER MODAL -->
+
+    <div id="report-user-modal" class="modal">
+
+        <form class="modal-box write-review-box"
+              action="report-user/{{ user.id }}"
+              method="post">
+
+            <button class="close-btn"
+                    type="button"
+                    onclick="closeModal('report-user-modal')">×</button>
+
+            <h2>Submit a Report?</h2>
+
+            <button class="submit-review-btn"
+                    type="submit">
+
+                Report User
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- BAN USER MODAL -->
+
+    <div id="ban-user-modal" class="modal">
+
+        <form class="modal-box write-review-box"
+              action="ban/{{ user.id }}"
+              method="post">
+
+            <button class="close-btn"
+                    type="button"
+                    onclick="closeModal('ban-user-modal')">×</button>
+
+            <h2>Ban User?</h2>
+
+            <button class="submit-review-btn"
+                    type="submit">
+
+                Ban User
+
+            </button>
+
+        </form>
+
+    </div>
+    {% include 'partials/footer-meet-the-team.html' %}
+
+    <script>
+
+        function openModal(id) {
+            document.getElementById(id).classList.add("show-modal");
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove("show-modal");
+        }
+
+        function updateCharCount() {
+
+            const reviewText =
+                document.getElementById("review-text");
+
+            const charCount =
+                document.getElementById("char-count");
+
+            charCount.textContent =
+                reviewText.value.length + "/265";
+        }
+
+        function openListingModal(
+            title,
+            price,
+            image,
+            description
+        ) {
+
+            document.getElementById("modal-listing-title")
+                .textContent = title;
+
+            document.getElementById("modal-listing-price")
+                .textContent = price;
+
+            document.getElementById("modal-listing-image")
+                .src = image;
+
+            document.getElementById("modal-listing-description")
+                .textContent = description;
+
+            document.getElementById("modal-listing-link").innerHTML =
+                `<button
+                    type="button"
+                    onclick="window.location.href='/search.html?query=${encodeURIComponent(title)}'"
+                    style="
+                        padding: 10px 22px;
+                        border-radius: 20px;
+                        border: 2px solid var(--gray-1);
+                        background-color: var(--primary-2);
+                        font-weight: bold;
+                        color: black;
+                        cursor: pointer;
+                        transition: 0.2s ease;
+                    "
+                    onmouseover="this.style.backgroundColor='var(--secondary-1)'; this.style.transform='translateY(-2px)'"
+                    onmouseout="this.style.backgroundColor='var(--primary-2)'; this.style.transform='translateY(0)'"
+                >
+                    Search for listing
+                </button>`;
+
+            openModal("listing-modal");
+        }
+
+    </script>
+
+</body>
+</html>

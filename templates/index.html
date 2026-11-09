@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include 'partials/google-analytics.html' %}
+
+        <!-- Metadata -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GatorGoods</title>
+
+        <!-- External Resources -->
+        <!-- {{theme}} -->
+        <link rel="stylesheet" href="static/styles/main.css">
+        <link rel="stylesheet" href="static/styles/index.css">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    </head>
+
+    <body>
+        {% include 'partials/header.html' %}
+
+        <main>
+            <section id="welcome-container">
+
+                <!-- left intro -->
+                <div class="column" id="intro-text">
+                    <h1>GatorGoods</h1>
+
+                    <h2>
+                        Welcome to a market you can trust.
+                        Buy, sell or trade, do it all safely
+                        with your fellow gators.
+                    </h2>
+                </div>
+
+                <!-- center search -->
+                <section id="search-section">
+                    <div id="search-container">
+                        <h1>Search Now!</h1>
+
+                        <form class="search-bar" method="get" action="search.html">
+
+                            <!-- search input -->
+                            <div class="search-input-wrapper">
+                                <input
+                                    type="text"
+                                    placeholder="Search for items..."
+                                    name="query"
+                                />
+                            </div>
+
+                            <!-- search button -->
+                            <button type="submit">Search</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- mini auth -->
+                <div id="home-auth-card" class="column">
+
+                    <!-- left eye -->
+                    <div class="home-gator-eye home-login-eye">
+                        <button
+                            id="show-login-form"
+                            class="home-gator-eye-button"
+                        >
+                            Log In
+                        </button>
+                    </div>
+
+                    <!-- right eye -->
+                    <div class="home-gator-eye home-signup-eye">
+                        <button
+                            id="show-signup-form"
+                            class="home-gator-eye-button"
+                        >
+                            Sign Up
+                        </button>
+                    </div>
+
+                    <!-- form container -->
+                    <div id="form-container"></div>
+
+                    <!-- swap between login and signup forms -->
+                    <script>
+                        // login form
+                        let login = `
+                            <form class="home-auth-form home-login-form" method="post" action="/login">
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    required
+                                >
+
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Password"
+                                    required
+                                >
+
+                                <a href="#" id="home-forgot-password-link">
+                                    Forgot Password?
+                                </a>
+
+                                <button type="submit" class="home-submit-btn">
+                                    Log In
+                                </button>
+                            </form>
+                        `;
+
+                        // signup form
+                        let signup = `
+                            <form class="home-auth-form home-signup-form" method="post" action="/signup">
+                                <input
+                                    type="email"
+                                    id="signup-email"
+                                    name="email"
+                                    placeholder="Email"
+                                    required
+                                >
+
+                                <input
+                                    type="text"
+                                    id="signup-display-name"
+                                    name="display_name"
+                                    placeholder="Display Name"
+                                    required
+                                >
+
+                                <input
+                                    type="password"
+                                    id="signup-password"
+                                    name="password"
+                                    placeholder="Password"
+                                    required
+                                >
+
+                                <input
+                                    type="password"
+                                    id="signup-confirm-password"
+                                    name="confirm_password"
+                                    placeholder="Confirm Password"
+                                    required
+                                >
+
+                                <button type="submit" class="home-submit-btn">
+                                    Sign Up
+                                </button>
+                            </form>
+                        `;
+
+                        // switch to login form
+                        function switchToLogin() {
+                            $("#show-login-form").addClass("active-tab");
+                            $("#show-signup-form").removeClass("active-tab");
+
+                            $("#form-container").html(login);
+                        }
+
+                        // switch to signup form
+                        function switchToSignup() {
+                            $("#show-signup-form").addClass("active-tab");
+                            $("#show-login-form").removeClass("active-tab");
+
+                            $("#form-container").html(signup);
+                        }
+
+                        // button listeners
+                        $("#show-login-form").click(switchToLogin);
+                        $("#show-signup-form").click(switchToSignup);
+
+                        // default form
+                        $(document).ready(function () {
+                            switchToLogin();
+                        });
+                    </script>
+                </div>
+            </section>
+
+
+
+            <!-- category bubble belt -->
+<section id="category-bubble-section">
+
+    <!-- top row -->
+    <div class="category-bubble-row bubble-row-top">
+        <div class="category-bubble-track">
+
+            {% for category in categories %}
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-large"
+                >
+                    {{ category }}
+                </a>
+
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-small"
+                >
+                    {{ category }}
+                </a>
+
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-medium"
+                >
+                    {{ category }}
+                </a>
+            {% endfor %}
+
+            {% for category in categories %}
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-medium"
+                >
+                    {{ category }}
+                </a>
+
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-small"
+                >
+                    {{ category }}
+                </a>
+
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-large"
+                >
+                    {{ category }}
+                </a>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <!-- bottom row -->
+    <div class="category-bubble-row bubble-row-bottom">
+        <div class="category-bubble-track reverse-track">
+
+            {% for category in categories %}
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-medium"
+                >
+                    {{ category }}
+                </a>
+
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-large"
+                >
+                    {{ category }}
+                </a>
+
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-small"
+                >
+                    {{ category }}
+                </a>
+            {% endfor %}
+
+            {% for category in categories %}
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-small"
+                >
+                    {{ category }}
+                </a>
+
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-medium"
+                >
+                    {{ category }}
+                </a>
+
+                <a
+                    href="/search.html?category={{ category }}"
+                    class="category-bubble bubble-large"
+                >
+                    {{ category }}
+                </a>
+            {% endfor %}
+
+        </div>
+    </div>
+
+</section>
+
+
+
+            
+        </main>
+
+        {% include 'partials/footer-meet-the-team.html' %}
+    </body>
+</html>

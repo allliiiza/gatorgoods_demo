@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'partials/google-analytics.html' %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - GatorGoods</title>
+
+    <link rel="stylesheet" href="../static/styles/main.css">
+    <link rel="stylesheet" href="../static/styles/edit-profile.css">
+</head>
+<body>
+    {% include 'partials/header.html' %}
+
+    <main id="edit-profile-page">
+        <section id="edit-profile-panel">
+
+            <div id="edit-left">
+                <h2>Username:</h2>
+                <input type="text" placeholder="Current Username...">
+
+                <img src="../static/images/profile-placeholder.png"
+                     id="edit-avatar"
+                     alt="Avatar">
+
+                <button type="button" id="edit-avatar-btn">Edit Picture or Avatar</button>
+
+                <h2>Pronouns:</h2>
+                <input type="text" placeholder="example/example...">
+            </div>
+
+            <div id="edit-right">
+                <div class="edit-section">
+                    <h2>Bio</h2>
+                    <textarea placeholder="Tell us what you are looking for, or what you’re selling"></textarea>
+                </div>
+
+                <div class="edit-section listings-section">
+                    <h2>Edit Listings</h2>
+
+                    <div id="listing-cards">
+                        <div class="listing-card">
+                            <button class="remove-btn" type="button">×</button>
+                            <div class="listing-image"></div>
+                            <p>Listing Name</p>
+                        </div>
+
+                        <div class="listing-card">
+                            <button class="remove-btn" type="button">×</button>
+                            <div class="listing-image"></div>
+                            <p>Listing Name</p>
+                        </div>
+
+                        <div class="listing-card">
+                            <button class="remove-btn" type="button">×</button>
+                            <div class="listing-image"></div>
+                            <p>Listing Name</p>
+                        </div>
+
+                        <div class="listing-card">
+                            <button class="remove-btn" type="button">×</button>
+                            <div class="listing-image"></div>
+                            <p>Listing Name</p>
+                        </div>
+
+                        <div class="listing-card">
+                            <button class="remove-btn" type="button">×</button>
+                            <div class="listing-image"></div>
+                            <p>Listing Name</p>
+                        </div>
+
+                        <div class="listing-card">
+                            <button class="remove-btn" type="button">×</button>
+                            <div class="listing-image"></div>
+                            <p>Listing Name</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" id="confirm-btn">Confirm Changes</button>
+            </div>
+
+        </section>
+    </main>
+</body>
+</html>

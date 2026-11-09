@@ -1,0 +1,439 @@
+<!-- search.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'partials/google-analytics.html' %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GatorGoods</title>
+
+    <link rel="stylesheet" href="static/styles/main.css">
+    <link rel="stylesheet" href="static/styles/search.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    {% include 'partials/header-conditional.html' %}
+
+    <form method="get" action="search.html" class="search-page-layout">
+
+        <section id="filters-container">
+            <div class="filters-title">Filters</div>
+
+            <div class="search-controls">
+                <div class="filter-block">
+                    
+                        <h2>Price Range</h2>
+
+                         <div class="price-range-inputs">
+                                <input
+                                    type="number"
+                                    name="min_price"
+                                    placeholder="min"
+                                    min="0"
+                                    step="0.01"
+                                    value="{{ min_price if min_price else '' }}"
+                                >
+
+                                <span class="price-dash">–</span>
+
+                                <input
+                                    type="number"
+                                    name="max_price"
+                                    placeholder="max"
+                                                            min="0"                        
+                                    step="0.01"
+                                    value="{{ max_price if max_price else '' }}"
+                                >
+                            </div>
+                        </div>
+
+
+<div class="filter-block">
+<h2>Categories</h2>
+
+
+
+
+                    <div class="single-pick-options">
+                        {% for category in categories %}
+                            <input
+                                type="radio"
+                                name="category"
+                                id="cat-{{ category }}"
+                                class="pill-radio"
+                                value="{{ category }}"
+                                {% if selected_category == category %}checked{% endif %}
+                            >
+
+                            <label for="cat-{{ category }}" class="pill-label">
+                                {{ category }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="apply-btn-wrap">
+                    <button class="apply-btn" type="submit">Apply</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="search-container">
+
+            <div class="search-controls">
+                <div class="search-top-row">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon">&#128269;</span>
+                        <input
+                            type="text"
+                            value="{{ query_text }}"
+                            name="query"
+                            placeholder="Search for listings">
+                    </div>
+
+                    <button type="submit" class="search-button">Search</button>
+                </div>
+
+                <div style="text-align:center;">
+                    <p>{{ result_count }} listing(s) found.</p>
+                </div>
+            </div>
+
+            <div id="search-results">
+                {% for listing in listings %}
+                    <div
+                        class="listing-card"
+                        data-title="{{ listing.title }}"
+                        data-profile-path="{{ listing.seller.profile_image_path or 'static/images/profile-placeholder.png' }}"
+                        data-price="{{ '{:.02f}'.format(listing.price) }}"
+                        data-description="{{ listing.description }}"
+                        data-seller="{{ listing.seller_name }}"
+                        data-seller-id="{{ listing.seller.id }}"
+                        data-category="{{ listing.category_name }}"
+                        data-image="{{ listing.top_image_path if listing.top_image_path else '' }}"
+                        data-conversation="{{ listing.conversation_exists }}"
+                        data-conversation-id="{{ listing.conversation_id }}"
+                        data-listing-id="{{ listing.id }}"
+                        data-bookmarked="{{ listing.bookmarked }}"
+                        data-rating="{{ listing.seller.rating }}"
+                        data-location="{{ listing.pickup_location_name }}"
+                        data-course-id="{{ listing.course_code }}"
+                    >
+
+                        <div class="listing-image">
+                            {% if listing.top_image_path %}
+                                <img src="{{ listing.top_image_path }}" alt="{{ listing.title }}">
+                            {% endif %}
+                        </div>
+
+                        <h3>{{ listing.title }}</h3>
+                        <p>${{ "{:.02f}".format(listing.price) }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <script>
+                $(document).ready(function() {
+                    $(".pill-radio").on("click", function(e) {
+                        var $el = $(this);
+                        if ($el.data('was-checked')) {
+                            $el.prop('checked', false).change();
+                            $el.data('was-checked', false);
+                        } else {
+                            var name = $el.attr('name');
+                            if (name) {
+                                $('input[name="' + name + '"]').data('was-checked', false);
+                            }
+
+                            $el.prop('checked', true).change();
+                            $el.data('was-checked', true);
+                        }
+                    });
+                });
+            </script>
+        </section>
+    </form>
+
+    <!-- VIEW LISTING POPUP -->
+    <div id="listing-modal" class="modal-overlay">
+        <div class="view-listing-modal">
+            <div class="modal-header row">
+                <a href="#" id="close-listing-modal" class="back-button">Back</a>
+                <h1>View Listing</h1>
+            </div>
+
+            <div class="view-listing-content">
+                <div class="view-listing-left">
+
+                    <!-- TODO: Add multi-image carousel here later:
+                    left/right arrow buttons + gray dots under image,
+                    active image dot turns green. -->
+
+                    <div class="view-listing-image">
+                        <img id="modal-listing-image" src="" alt="Listing image">
+                    </div>
+
+                    <h2 id="modal-listing-title">Listing Name</h2>
+                    <h3 id="modal-listing-price">$$$</h3>
+                </div>
+
+                <div class="view-listing-divider"></div>
+
+                <div class="view-listing-right">
+                    <div class="seller-row">
+                        <img src="static/images/profile-placeholder.png" class="seller-icon" alt="Seller profile">
+
+                        <div>
+                            <h2 id="modal-seller-name">Display Name</h2>
+
+                            <div class="stars-container row">
+                                <img src="static/images/empty-star.png" class="rating-star" alt="empty star">
+                                <img src="static/images/empty-star.png" class="rating-star" alt="empty star">
+                                <img src="static/images/empty-star.png" class="rating-star" alt="empty star">
+                                <img src="static/images/empty-star.png" class="rating-star" alt="empty star">
+                                <img src="static/images/empty-star.png" class="rating-star" alt="empty star">
+                            </div>
+                        </div>
+                    </div>
+
+                    <p id="modal-listing-description">
+                        A description about the listed item goes here.
+                    </p>
+
+                    <p id="modal-listing-category"></p>
+                    <p id="modal-listing-location"></p>
+                    <p id="modal-listing-course-id"></p>
+
+                    {% if current_user %}
+                    <div class="listing-modal-actions">
+                        <div class="quick-message-box">
+                            <!--<form method="post" action="/message">
+                                <input
+                                    type="text"
+                                    id="quick-message-input"
+                                    class="quick-message-input"
+                                    name="message"
+                                    value="darkness"
+                                >
+                
+                                <button type="submit" id="quick-message-send" class="message-seller-btn">
+                                    Send
+                                </button>
+                            </form>-->
+                        </div>
+<!--                        <div class="quick-message-box">
+                            <input
+                                type="text"
+                                id="quick-message-input"
+                                value="this route active"
+                                class="quick-message-input"
+                            >
+                        
+                            <a
+                                href="inbox.html"
+                                id="quick-message-send"
+                                class="message-seller-btn"
+                            >
+                                Send
+                            </a>
+                        </div>
+-->
+                        <button
+                            type="button"
+                            class="bookmark-btn"
+                            aria-label="Save listing"
+                        ></button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'partials/footer-meet-the-team.html' %}
+
+    <script>
+    let currentSeller = "";
+    let currentListingTitle = "";
+
+    $(".listing-card").on("click", function () {
+        let currentCard = $(this);
+
+        let title = currentCard.data("title");
+        let profile_path = currentCard.data("profile-path");
+        let price = currentCard.data("price");
+        let description = currentCard.data("description");
+        let seller = currentCard.data("seller");
+        let category = currentCard.data("category");
+        let image = currentCard.data("image");
+        let savedMessage = currentCard.data("conversation") == "True";
+        let conversationID = currentCard.data("conversation-id");
+        let listingID = currentCard.data("listing-id");
+        let sellerID = currentCard.data("seller-id");
+        let bookmarked = currentCard.data("bookmarked");
+        let rating = currentCard.data("rating");
+        let loc = currentCard.data("location");
+        let courseID = currentCard.data("course-id");
+
+        let isBookmarked =
+            bookmarked === true ||
+            bookmarked === "True" ||
+            bookmarked === "true";
+
+        $(".bookmark-btn")
+            .toggleClass("bookmarked", isBookmarked)
+            .off("click")
+            .on("click", function (event) {
+                event.stopPropagation();
+
+                const button = $(this);
+                const newBookmarkedState = !button.hasClass("bookmarked");
+
+                // visually update immediately
+                button.toggleClass("bookmarked", newBookmarkedState);
+
+                // IMPORTANT:
+                // update the listing card's stored bookmark value too
+                // so reopening the modal remembers the new state
+                currentCard.data("bookmarked", newBookmarkedState);
+                currentCard.attr("data-bookmarked", newBookmarkedState);
+
+                // NOTE: we could toggle the heart-being-filled-in and then check the "success" field of the
+                // JSON returned by this toggle-bookmark endpoint to un-fill-it-in if the request to toggle
+                // bookmark failed
+                fetch(`/toggle-bookmark/${listingID}`, {
+                    method: "POST"
+                }).catch(() => {
+
+                    // revert visual state if request fails
+                    button.toggleClass("bookmarked", !newBookmarkedState);
+
+                    currentCard.data("bookmarked", !newBookmarkedState);
+                    currentCard.attr("data-bookmarked", !newBookmarkedState);
+                });
+            });
+
+        currentSeller = seller;
+        currentListingTitle = title;
+
+        $("#modal-listing-title").text(title);
+        $(".seller-icon").attr("src", profile_path);
+        $("#modal-listing-price").text("$" + price);
+        $("#modal-listing-description").text(description);
+        $("#modal-seller-name").html(
+            `<a href="profile.html?id=${sellerID}">${seller}</a>`
+        );
+
+        let starsHTML = "";
+
+        // full stars
+        for (let i = 0; i < Math.round(rating); i++) {
+            starsHTML += '<img src="static/images/full-star.png" class="rating-star">';
+        }
+
+        // empty stars
+        for (let i = 0; i < 5 - Math.round(rating); i++) {
+            starsHTML += '<img src="static/images/empty-star.png" class="rating-star">';
+        }
+
+        $(".stars-container").html(starsHTML);
+
+        if (category) {
+            $("#modal-listing-category").text("Category: " + category);
+        } else {
+            $("#modal-listing-category").text("");
+        }
+
+        if (loc) {
+            $("#modal-listing-location").text("Location: " + loc);
+        } else {
+            console.log(loc);
+            $("#modal-listing-location").text("");
+        }
+
+        if (courseID) {
+            $("#modal-listing-course-id").text("Course ID: " + courseID);
+        } else {
+            $("#modal-listing-course-id").text("");
+        }
+
+        if (image) {
+            $("#modal-listing-image").attr("src", image).show();
+        } else {
+            $("#modal-listing-image").hide();
+        }
+
+        let messageKey = "messaged_" + seller + "_" + title;
+        //let savedMessage = localStorage.getItem(messageKey);
+
+        {% if current_user %}
+        if (savedMessage) {
+            $(".quick-message-box").html(`
+                <a
+                    href="inbox.html?conversation_id=${conversationID}"
+                    class="message-seller-btn"
+                >
+                    Open Message
+                </a>
+            `);
+        } else {
+            $(".quick-message-box").html(`
+                <form method="post" action="/new-conversation/${listingID}">
+                    <input
+                        type="text"
+                        id="quick-message-input"
+                        class="quick-message-input"
+                        name="message"
+                        value="Hey, is this still available?"
+                    >
+
+                    <button type="submit" id="quick-message-send" class="message-seller-btn">
+                        Send
+                    </button>
+                </form>
+            `);
+        }
+
+        /*
+        $(".bookmark-btn").on("click", () => {
+            // NOTE: we could toggle the heart-being-filled-in and then check the "success" field of the
+            // JSON returned by this toggle-bookmark endpoint to un-fill-it-in if the request to toggle
+            // bookmark failed
+            fetch(`/toggle-bookmark/${listingID}`, { method: "POST" }).catch(() => {});
+        });
+        */
+        {% endif %}
+
+        $("#listing-modal").addClass("show");
+    });
+
+    $("#close-listing-modal").on("click", function (event) {
+        event.preventDefault();
+        $("#listing-modal").removeClass("show");
+    });
+
+    $("#listing-modal").on("click", function (event) {
+        if (event.target === this) {
+            $("#listing-modal").removeClass("show");
+        }
+    });
+
+    //$(document).on("click", "#quick-message-send", function (event) {
+    //    event.preventDefault();
+
+    //    let message = $("#quick-message-input").val();
+    //    let messageKey = "messaged_" + currentSeller + "_" + currentListingTitle;
+
+    //    localStorage.setItem(messageKey, message);
+
+    //    window.location.href =
+    //        "inbox.html?conversation_id=99&seller=" +
+    //        encodeURIComponent(currentSeller) +
+    //        "&message=" +
+    //        encodeURIComponent(message);
+    //});
+</script>
+
+</body>
+</html>

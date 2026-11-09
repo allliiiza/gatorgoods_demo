@@ -1,0 +1,102 @@
+[
+    {
+        "name": "TI-84 Calculator",
+        "description": "Scientific graphing device",
+        "price": 35.0,
+        "category_name": "Electronics",
+        "images": [
+                "static/images/dummy-items/ti84-calculator.jpg"
+        ]
+    },
+    {
+        "name": "Study Supplies",
+        "description": "Includes calculator and pencils",
+        "price": 20.0,
+        "category_name": "Electronics",
+        "images": [
+                "static/images/dummy-items/study-supplies.jpg"
+        ]
+    },
+    {
+        "name": "Desk Lamp",
+        "description": "LED dorm lamp",
+        "price": 15.0,
+        "category_name": "Furniture",
+        "images": [
+                "static/images/dummy-items/desk-lamp.jpg"
+        ]
+    },
+    {
+        "name": "Calculator - Casio fx-115ES PLUS",
+        "description": "Calculator in great working condition. All buttons function properly and display is clear. Perfect for school, office, or everyday use. Lightweight and easy to carry.",
+        "price": 30.0,
+        "category_name": "Calculators",
+        "images": [
+                "static/images/dummy-items/calculator1.png"
+        ]
+    },
+    {
+        "name": "Crossbody leather Purse",
+        "description": "Beautiful tan leather crossbody/satchel purse in excellent condition. Durable material with a timeless design, featuring multiple compartments for easy organization. Ideal for daily use, work, or casual outings.",
+        "price": 50.0,
+        "category_name": "Accessories",
+        "images": [
+                "static/images/dummy-items/bag1.png",
+                "static/images/dummy-items/bag2.png"
+        ]
+    },
+    {
+        "name": "Metal Bedframe",
+        "description": "Metal bed frame in great condition. Strong and sturdy design with plenty of under-bed storage space. Easy to assemble and fits a standard single/twin mattress (75\" x 37\"). Mattress not included.",
+        "price": 20.0,
+        "category_name": "Furniture",
+        "images": [
+                "static/images/dummy-items/bedframe1.png",
+                "static/images/dummy-items/bedframe2.png",
+                "static/images/dummy-items/bedframe3.png"
+        ]
+    },
+    {
+        "name": "Small Microwave",
+        "description": "Microwave in good working condition. Heats food quickly and evenly with easy-to-use controls. Clean and well-maintained. Perfect for home or dorm use.",
+        "price": 40.0,
+        "category_name": "Electronics",
+        "images": [
+                "static/images/dummy-items/microwave1.png",
+                "static/images/dummy-items/microwave2.png"
+        ]
+    },
+    {
+        "name": "Ninja Air fryer",
+        "description": "Ninja air fryer in excellent working condition. Cooks food quickly and evenly with little to no oil. Easy-to-use digital controls and a large basket—perfect for fries, chicken, and more.",
+        "price": 75.0,
+        "category_name": "Electronics",
+        "images": [
+                "static/images/dummy-items/airfryer1.png",
+                "static/images/dummy-items/airfryer2.png",
+                "static/images/dummy-items/airfryer3.png"
+        ]
+    },
+    {
+        "name": "Target Notebooks",
+        "description": "Set of 7 spiral notebooks in great condition. Lined pages, perfect for school, work, or everyday notes. Clean and unused.",
+        "price": 5.0,
+        "category_name": "School supplies",
+        "images": [
+                "static/images/dummy-items/notebook1.png",
+                "static/images/dummy-items/notebook2.png",
+                "static/images/dummy-items/notebook3.png"
+        ]
+    },
+    {
+        "name": "Office Chair",
+        "description": "Modern and comfortable office chair, perfect for working or studying from home. Breathable mesh back keeps you cool, while the cushioned seat provides all-day comfort. Adjustable and easy to move—great addition to any workspace, lightly used!",
+        "price": 25.0,
+        "category_name": "Furniture",
+        "images": [
+                "static/images/dummy-items/chair1.png",
+                "static/images/dummy-items/chair2.png",
+                "static/images/dummy-items/chair3.png"
+        ]
+    }
+]

@@ -1,0 +1,44 @@
+{
+    "Evan": {
+        "name": "Evan Caplinger",
+        "role": "Team Lead",
+        "img": "static/images/team-photos/Evan.jpg",
+        "bio": "Evan is a composer and software engineer who is currently a first-year Master's student at SFSU focusing on HPC, computational science and quantum computing. Since 2023 he has worked for Malin Space Science Systems, where he develops internal tools to test cameras for spaceflight, mostly for NASA missions, including the Docking Camera for upcoming manned lunar missions Artemis 2 and Artemis 3. He also works at Lawrence Berkeley National Lab, where he is designing QADROP, a job queueing and resource management system for the Advanced Quantum Testbed. As a musician, he plays piano, cello, and synthesizer, as well as hichiriki, an instrument used in gagaku, a type of traditional Japanese court music. He got his undergrad degree in music composition from Columbia University. He also composes music and does programming for video games; he currently studies with game developer David Kanaga."
+    },
+    "Jasmine": {
+        "name": "Jasmine Hernandez",
+        "role": "Front End Lead",
+        "img": "static/images/team-photos/Jasmine.jpg",
+        "bio": "Jasmine is an artist, programmer, and first generation college student. She is currently a fourth year computer science major at San Francisco State University (SFSU) and is expecting to graduate in spring 2026. She first took an interest in computer science because she liked having the opportunity to take both a creative and analytical approach to things, and is looking forward to continuing her studies with a focus on computer networking, information technologies, and web development. Jasmine enjoys working in community-oriented environments and is always looking for more opportunities to work with others. In the past, Jasmine has worked with the non-profit Arriba Juntos (Upwards Together), as well as for Buena Vista Child Care, faciliating growth and directing those who are looking for a brighter future."
+    },
+    "Jared":{
+        "name": "Jared Fong",
+        "role": "Back End Team Lead",
+        "img": "static/images/team-photos/Jared.png",
+        "bio": "Jared Fong is currently a fourth year Computer Science Major at San Francisco State University expected to graduate Spring 2026. He is focused on a career in fin-tech, taking a minor in Business Finance. He is interested in building an AI analyst for crypto currency. He currently works for Rent-Livva, an agentic platform that helps match landlords and renters while making their experience as smooth as possible. Beyond work and academics, Jared enjoys playing all types of sports, including golf, basketball, soccer, snowboarding, tennis, pickleball, and poker. He also enjoys working out, trying new places to eat, and going on walks."
+    },
+    "Daniel": {
+        "name": "Daniel Perez Paiz",
+        "role": "Front End & Database Developer",
+        "img": "static/images/team-photos/Danny1.jpg",
+        "bio": "Daniel Perez Paiz is a fourth year Computer Science major with a minor in Mathematics at San Francisco State University. He has a strong passion for education and has been volunteering with the San Francisco Unified School District since 2023, currently placed at Sanchez High School through the guidance of the SF Teacher Fellows program. In addition, he is a leading member of SF State Math Circle, an extracurricular math focused program led by college students that works to strengthen the confidence and mathematical identities of elementary school students ages 8–12. Through these experiences, Daniel has combined his interests in technology, mentorship, and community engagement. He currently aspires to become either a video game developer or an educational web developer, with the goal of creating interactive tools that make learning more engaging and accessible."
+    },
+    "Sarah": {
+        "name": "Sarah Sahajlan",
+        "role": "Front End Developer",
+        "img": "static/images/team-photos/Sarah1.jpg",
+        "bio": "Sarah Sahajlan is a fourth-year Computer Science student at San Francisco State University, pursuing a minor in Mathematics. She maintains a 3.95 GPA and has completed coursework in databases, operating systems, software and web development, data structures, linear algebra, probability, and statistics. She previously served as a Research Assistant for the AA CARES Project, where she analyzed CSU system-wide wellness survey data using Python, generated visual reports, and conducted multivariate regression analyses. She also contributed to sections of the official campus report by translating data findings into clear recommendations. In addition, she works as a Student Assistant at the Center for Science & Mathematics Education, maintaining the organization’s website and developing materials to support seminar programming. She is interested in continuing to grow in software development and data-focused roles."
+    },
+    "Aliza": {
+        "name": "Aliza Khan",
+        "role": "Front & Back End Developer",
+        "img": "static/images/team-photos/Aliza.png",
+        "bio": "Aliza Khan is a fourth year Computer Science student at San Francisco State University with a strong interest in building real world software systems. Throughout her studies, she has focused on strengthening her technical foundation while developing an understanding of how software translates into practical, user-facing solutions. Beyond academics, she has an interest in the automotive world, particularly in performance engineering and the growing role of software in modern vehicles. She hopes to pursue a career in software engineering or technical project management, ideally within industries where technology and innovation intersect, such as automotive or advanced engineering."
+    },
+    "Mithil": {
+        "name": "Mithil Dhameliya",
+        "role": "Back End Developer",
+        "img": "static/images/team-photos/Mithil.jpg",
+        "bio": "Mithil Dhameliya is a computer science major at San Francisco State University (SFSU), expecting to graduate in 2028. From an early age, Mithil has been fascinated by the process of creating things, which naturally led him to pursue computer science — a field that blends creativity, logic, and innovation. He is especially drawn to building applications and turning ideas into functional, real-world solutions. Mithil has gained hands-on experience working at a software company, where he contributed to the development of applications and strengthened his technical and collaborative skills. Through this experience, he developed a deeper appreciation for teamwork, problem-solving, and the impact technology can have on everyday life. He thrives in community-based environments and values working alongside others to build meaningful projects. Mithil is eager to continue expanding his knowledge, refining his skills, and contributing to innovative solutions that make a positive difference."
+    }
+}

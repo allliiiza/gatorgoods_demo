@@ -1,0 +1,11 @@
+flask
+gunicorn
+unix
+pydantic[email]
+sqlalchemy
+psycopg2-binary>=2.9.9
+pydantic-settings>=2.1.0
+python-jose>=3.5.0
+passlib>=1.7.4
+mysqlclient
+Flask-Pydantic

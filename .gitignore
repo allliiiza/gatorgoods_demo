@@ -1,0 +1,23 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+.DS_Store
+.pytest_cache/
+
+# Original AWS deployment configuration
+scripts/wsgi-server.service
+scripts/wsgi-server-local.service
+scripts/set-db.sh
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Local secrets and credentials
+*.pem
+*.key

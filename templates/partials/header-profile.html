@@ -1,0 +1,61 @@
+<header>
+    <a href="index.html"><img src="static/images/GatorTagLogo.png" class="headerLogo"></a>
+    <img src="{{ current_user.profile_image_path or 'static/images/profile-placeholder.png' }}" id="profile-button">
+</header>
+{% include 'partials/demo-banner.html' %}
+<section id="profile-menu" class="column">
+    <a class="dropdown-item" href="dashboard.html">Dashboard</a>
+    <a class="dropdown-item" href="inbox.html">Inbox</a>
+    <a class="dropdown-item" href="settings.html">Settings</a>
+    <a class="dropdown-item" href="search.html">Search</a>
+    <a class="dropdown-item" onclick="openModal('logout-modal')">Log Out</a>
+</section>
+<script>
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        var menu = document.getElementById("profile-menu");
+        var button = document.getElementById("profile-button");
+        menu.style.display = "none";
+
+        button.addEventListener("click", function(e) {
+            e.stopPropagation();
+            if (menu.style.display === "none") {
+            menu.style.display = "flex";
+            } else {
+            menu.style.display = "none";
+            }
+        });
+
+        document.addEventListener("click", function() {
+            menu.style.display = "none";
+        });
+
+        var editBtn = document.getElementById("edit-avatar-btn");
+        if (editBtn) {
+            editBtn.addEventListener("click", function() {
+            document.getElementById("profile_image").click();
+            });
+        }
+    });
+
+    function openModal(id) {
+            document.getElementById(id).classList.add("show-modal");
+        }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove("show-modal");
+    }
+
+</script>
+
+<div id="logout-modal" class="modal">
+  <div class="modal-box small-modal">
+    <button class="close-btn" type="button" onclick="closeModal('logout-modal')">×</button>
+    <h2>Log Out</h2>
+    <p>Are you sure you want to sign out of your account?</p>
+    <div class="modal-actions">
+      <button class="yes-btn" type="button" onclick="window.location.href='/logout'">Yes</button>
+      <button class="no-btn" type="button" onclick="closeModal('logout-modal')">No</button>
+    </div>
+  </div>
+</div>

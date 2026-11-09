@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include 'partials/google-analytics.html' %}
+
+        <!-- Metadata -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GatorGoods</title>
+
+        <!-- External Resources -->
+         <!-- {{theme}} -->
+        <link rel="stylesheet" href="static/styles/main.css"> <!-- global styles -->
+        <link rel="stylesheet" href="static/styles/dashboard.css"> <!-- dashboard page styles -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> <!-- jquery library api -->
+    </head>
+    <body>
+        {% include 'partials/header-search-chat.html' %}
+
+        <main class="column">
+
+            <section id="profile-section" class="row">
+                <!-- TODO: load user information -->
+                <img src="{{ user.profile_image_path or 'static/images/profile-placeholder.png' }}" id="user-profile-img" class="circle">
+                <div id="user-info" class="column">
+                    <h1 id="user-display-name"><a href="profile.html?id={{ user.id }}">{{ display_name }}</a></h1>
+                    <h2 id="user-pronouns">{{ user.pronouns }}</h2>
+                    <div class="stars-container" class="row">
+		         {% for _ in range(user.rating|int) %}
+		         <img src = "static/images/full-star.png" class="rating-star">
+		         {% endfor %}
+		         {% for _ in range(5 - user.rating|int) %}
+		         <img src = "static/images/empty-star.png" class="rating-star">
+		         {% endfor %}
+                    </div>
+                </div>
+                <p id="user-bio">{% if bio %}{{ bio[:384] }}{% endif %}</p>
+                <div id="settings-buttons-container" class="column">
+                    <img src="static/images/settings-icon.png" id="settings-button" class="profile-section-button" onclick="window.location.href='settings.html'">
+                    {% if user.is_moderator %}
+                    <img src="static/images/moderator.webp" id="admin-button" class="profile-section-button" onclick="window.location.href='moderator.html'">
+                    {% endif %}
+                </div>
+                
+            </section>
+
+            <div id="content" class="row">
+
+            <section id="listings-section">
+                <div class="listings-header row">
+                    <h2>Listings</h2>
+                    <button id="open-upload-modal" class="create-listing-btn" type="button">
+                        +
+                    </button>
+                </div>
+                <div class="listings-header row">
+                    <button  class="listing-btn" type="button" onclick="showActiveListings();">
+                        Active
+                    </button>
+                    <button  class="listing-btn" type="button" onclick="showReviewListings();">
+                        Under Review
+                    </button>
+                    <button  class="listing-btn" type="button" onclick="showBookmarkedListings();">
+                        Saved
+                    </button>
+                </div>
+                <!-- update to add different types  -->
+                    <div class="listings-container" id="listings-container-active">
+                        {% if listings_active|length == 0 %}
+                            <p>No listings yet!</p>
+                        {% endif %}
+                            {% for listing in listings_active %}
+                                <div class="listing column">
+                                    <img src="{{ listing.top_image_path }}" class="listing-img">
+                                    <p><b>{{ listing.title }}</b></p>
+                                    <p>${{ '{:.02f}'.format(listing.price) }}<p>
+                                </div>
+                        {% endfor %}
+                    </div>
+                    <div class="listings-container" id="listings-container-review" hidden>
+                        {% if listings_review|length == 0 %}
+                            <p>No listings yet!</p>
+                        {% endif %}
+                            {% for listing in listings_review %}
+                                <div class="listing column">
+                                    <img src="{{ listing.top_image_path }}" class="listing-img">
+                                    <p><b>{{ listing.title }}</b></p>
+                                    <p>${{ '{:.02f}'.format(listing.price) }}<p>
+                                </div>
+                        {% endfor %}
+                    </div>
+                    <div class="listings-container" id="listings-container-bookmarked" hidden>
+                        {% if bookmarks|length == 0 %}
+                            <p>No bookmarked listings yet!</p>
+                        {% endif %}
+                            {% for listing in bookmarks %}
+                                <div class="listing column">
+                                    <img src="{{ listing.top_image_path }}" class="listing-img">
+                                    <p><b>{{ listing.title }}</b></p>
+                                    <p>${{ '{:.02f}'.format(listing.price) }}<p>
+                                </div>
+                        {% endfor %}
+                    </div>
+            </section>
+
+            <section id="reviews-container">
+                    {% if reviews|length == 0 %}
+                    <p>No reviews yet!</p>
+                    {% endif %}
+                    {% for review in reviews %}
+                    <div class="review column">
+                        <h3 class="review-title">{{ review.title }}</h3>
+                        <div class="stars-container" class="row">
+                            {% for _ in range(review.score|int) %}
+                            <img src = "static/images/full-star.png" class="rating-star">
+                            {% endfor %}
+                            {% for _ in range(5 - review.score|int) %}
+                            <img src = "static/images/empty-star.png" class="rating-star">
+                            {% endfor %}
+                        </div>
+                        <p class="review-description">
+                        {{ review.review_text }}
+                        </p>
+                    </div>
+                    {% endfor %}
+                </section>
+            
+            </div>
+    
+        </main>
+        
+        {% include 'partials/footer-meet-the-team.html' %}
+    </body>
+</html>
+
+<!-- UPLOAD POP UP -->
+
+<div id="upload-modal" class="modal-overlay">
+    <div class="upload-modal">
+        <div class="modal-header row">
+            <a href="#" id="close-upload-modal" class="back-button">Back</a>
+            <h1>Upload</h1>
+        </div>
+
+        <form class="upload-form" method="post" action="{{ url_for('create_listing') }}" enctype="multipart/form-data">
+            <div class="upload-left">
+                <label for="listing-image" class="upload-box">
+                    <div class="plus-circle">+</div>
+                    <h2>Add<br>photos/videos</h2>
+                </label>
+                <input type="file" id="listing-image" name="listing_image" accept="image/*,video/*" multiple hidden>
+            </div>
+
+            <div class="upload-right">
+                <div class="form-row">
+                    <label>Title</label>
+                    <div class="input-with-limit">
+                        <input type="text" name="title" placeholder="What is the item? (Max 80 characters)" maxlength="80" required>
+                    </div>                      
+                </div>
+
+                <div class="form-row">
+                    <label>Description</label>
+                    <div class="input-with-limit">
+                        <textarea name="description" placeholder="Please describe the item. Please include the condition of the item.....  (Max 300 characters)" maxlength="300" required></textarea>
+                    </div>    
+                </div>
+
+                <div class="form-row">
+                    <label>Price</label>
+                    <div class="input-with-limit">
+                        <input type="number" name="price" placeholder="How much do you want to sell the item for?" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label>Category</label>
+                    <select name="category" required>
+                        <option value="">Select a category</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <label>Course ID</label>
+                    <select name="course_id" required>
+                        <option value="">Select a course</option>
+                        {% for course_tag in course_tags %}
+                        <option value="{{ course_tag }}">{{ course_tag }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <label>Pickup</label>
+                    <select name="pickup_location" required>
+                        <option value="">Select pickup location</option>
+                        {% for pickup_location in pickup_locations %}
+                        <option value="{{ pickup_location }}">{{ pickup_location }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" id="post-submit-btn" class="post-submit-btn">Post</button>
+                
+                <div id="approval-popup" class="approval-popup-overlay">
+                    <div class="approval-popup-box">
+                        <h2>Needs Approval</h2>
+                
+                        <p>
+                            Your listing has been submitted and will be approved soon.
+                        </p>
+                
+                        <button type="button" id="close-approval-popup">
+                            OK
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const openModal = document.getElementById("open-upload-modal");
+    const closeModal = document.getElementById("close-upload-modal");
+    const modal = document.getElementById("upload-modal");
+
+    const postButton = document.getElementById("post-submit-btn");
+    const approvalPopup = document.getElementById("approval-popup");
+    const closeApprovalPopup = document.getElementById("close-approval-popup");
+
+    openModal.addEventListener("click", function () {
+        modal.classList.add("show");
+    });
+
+    closeModal.addEventListener("click", function (event) {
+        event.preventDefault();
+        modal.classList.remove("show");
+    });
+
+    const uploadForm = document.querySelector(".upload-form");
+    const listingImage = document.getElementById("listing-image");
+    const uploadBox = document.querySelector(".upload-box");
+
+    uploadForm.addEventListener("submit", function (event) {
+    if (!listingImage.files.length) {
+        event.preventDefault();
+        alert("Please upload at least one image.");
+    }
+});
+
+
+    
+
+    let selectedFiles = [];
+
+    let currentPreviewIndex = 0;
+
+    function renderPreviewGrid() {
+        uploadBox.innerHTML = `<div class="upload-carousel"></div>`;
+        const carousel = uploadBox.querySelector(".upload-carousel");
+
+        const file = selectedFiles[currentPreviewIndex];
+        const fileURL = URL.createObjectURL(file);
+
+        let mediaHTML = "";
+
+        if (file.type.startsWith("image/")) {
+            mediaHTML = `<img src="${fileURL}" class="upload-preview-img">`;
+        } else if (file.type.startsWith("video/")) {
+            mediaHTML = `
+                <video class="upload-preview-img" controls>
+                    <source src="${fileURL}" type="${file.type}">
+                </video>
+            `;
+        }
+
+        carousel.innerHTML = `
+            <button type="button" class="carousel-arrow left-arrow">‹</button>
+
+            <div class="preview-item">
+                <button type="button" class="remove-preview" data-index="${currentPreviewIndex}">×</button>
+                ${mediaHTML}
+            </div>
+
+            <button type="button" class="carousel-arrow right-arrow">›</button>
+
+            <p class="image-count">${currentPreviewIndex + 1} / ${selectedFiles.length}</p>
+        `;
+    }
+
+    listingImage.addEventListener("change", function () {
+        selectedFiles = selectedFiles.concat(Array.from(listingImage.files));
+        renderPreviewGrid();
+    });
+
+    uploadBox.addEventListener("click", function (event) {
+        if (event.target.classList.contains("right-arrow")) {
+            event.preventDefault();
+            currentPreviewIndex = (currentPreviewIndex + 1) % selectedFiles.length;
+            renderPreviewGrid();
+        }
+
+        if (event.target.classList.contains("left-arrow")) {
+            event.preventDefault();
+            currentPreviewIndex =
+                (currentPreviewIndex - 1 + selectedFiles.length) % selectedFiles.length;
+            renderPreviewGrid();
+        }
+
+        if (event.target.classList.contains("remove-preview")) {
+        event.preventDefault();
+
+        const index = parseInt(event.target.dataset.index);
+
+        selectedFiles.splice(index, 1);
+
+        if (selectedFiles.length === 0) {
+            uploadBox.innerHTML = `
+                <div class="plus-circle">+</div>
+                <h2>Add<br>photos/videos</h2>
+            `;
+
+            listingImage.value = "";
+            currentPreviewIndex = 0;
+            return;
+        }
+
+        if (currentPreviewIndex >= selectedFiles.length) {
+            currentPreviewIndex = selectedFiles.length - 1;
+        }
+
+        renderPreviewGrid();
+    }
+    });
+
+    closeApprovalPopup.addEventListener("click", function() {
+        approvalPopup.classList.remove("show");
+        modal.classList.remove("show");
+        uploadForm.reset();
+    });
+
+    function showActiveListings() {
+        document.getElementById("listings-container-active").hidden = false;
+        document.getElementById("listings-container-review").hidden = true;
+        document.getElementById("listings-container-bookmarked").hidden = true;
+    }
+
+    function showReviewListings() {
+        document.getElementById("listings-container-active").hidden = true;
+        document.getElementById("listings-container-review").hidden = false;
+        document.getElementById("listings-container-bookmarked").hidden = true;
+    }
+
+    function showBookmarkedListings() {
+        document.getElementById("listings-container-active").hidden = true;
+        document.getElementById("listings-container-review").hidden = true;
+        document.getElementById("listings-container-bookmarked").hidden = false;
+    }
+
+</script>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include 'partials/google-analytics.html' %}
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Member</title>
+
+  <!-- Use whichever path matches your project.
+       If your CSS lives in the same folder, change to: main.css
+       If it lives in /styles, keep this. -->
+  <link rel="stylesheet" href="static/styles/main.css" />
+  <link rel="stylesheet" href="static/styles/team-member.css" />
+</head>
+
+<body>
+  {% include 'partials/header.html' %}
+
+  <main class="memberPage">
+    <section class="memberCard">
+
+    <img id="photo" class="memberPhoto circle" src="{{team_member['img']}}">
+
+    <div class="memberInfo">
+      <h2 id="name">{{team_member.name}}</h2>
+      <p><strong>Role:</strong> <span id="role">{{team_member['role']}}</span></p>
+      <p id="bio">{{team_member['bio']}}</p>
+      <a id="return-button" href="team.html">← Back to team</a>
+    </div>
+  </section>
+  
+</main>
+{% include 'partials/footer-return-home.html' %}
+  </body>
+  </html>

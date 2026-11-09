@@ -1,0 +1,10 @@
+flask
+gunicorn
+unix
+pydantic
+sqlalchemy
+psycopg2-binary>=2.9.9
+pydantic-settings>=2.1.0
+python-jose>=3.5.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include 'partials/google-analytics.html' %}
+
+        <!-- Metadata -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GatorGoods</title>
+
+        <!-- External Resources -->
+        <link rel="stylesheet" href="static/styles/main.css"> <!-- global styles -->
+        <link rel="stylesheet" HREF = "static/styles/team.css"> <!-- page specific style -->
+    </head>
+    <body>
+        {% include 'partials/header.html' %}
+
+        <main>
+            <h1>Meet the Team</h1>
+            <h2>Interact with a profile to learn more about each team member</h2>
+
+            <section id="profiles-container">
+                {% for member in team_list %}
+                <a class="team-member" href="{{member['name'].split(' ')[0]}}.html" >
+                    <img class="team-member-photo" src="{{member['img']}}">
+                    <h3 class="team-member-name">{{member['name']}}</h3>
+                    <h4 class="team-member-role">{{member['role']}}</h4>
+                </a>
+                {% endfor %}
+            </section>
+
+        </main>
+        {% include 'partials/footer-return-home.html' %}
+    </body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'partials/google-analytics.html' %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GatorGoods Moderator</title>
+
+    <link rel="stylesheet" href="static/styles/main.css">
+    <link rel="stylesheet" href="static/styles/search.css">
+    <link rel="stylesheet" href="static/styles/dashboard.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    {% include 'partials/header.html' %}
+
+    <main class="column" style="padding: 2rem; gap: 3rem;">
+
+        <section style="width: 100%;">
+            <h1 style="text-align: center; margin-bottom: 2rem;">Moderator Dashboard</h1>
+
+            <h2 style="text-align: center; margin-bottom: 1rem;">Submitted Listings</h2>
+
+            <div id="search-results">
+                {% for listing in submitted_listings %}
+                    <div
+                        class="listing-card"
+                        data-title="{{ listing.title }}"
+                        data-profile-path="{{ listing.seller.profile_image_path or 'static/images/profile-placeholder.png' }}"
+                        data-price="{{ '{:.02f}'.format(listing.price) }}"
+                        data-description="{{ listing.description }}"
+                        data-seller="{{ listing.seller_name }}"
+                        data-seller-id="{{ listing.seller.id }}"
+                        data-category="{{ listing.category_name }}"
+                        data-image="{{ listing.top_image_path if listing.top_image_path else '' }}"
+                        data-listing-id="{{ listing.id }}"
+                        data-rating="{{ listing.seller.rating }}"
+                        data-location="{{ listing.pickup_location_name }}"
+                        data-course-id="{{ listing.course_code }}"
+                    >
+                        <div class="listing-image">
+                            {% if listing.top_image_path %}
+                                <img src="{{ listing.top_image_path }}" alt="{{ listing.title }}">
+                            {% endif %}
+                        </div>
+
+                        <h3>{{ listing.title }}</h3>
+                        <p>${{ "{:.02f}".format(listing.price) }}</p>
+
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <form method="post" action="/approve/{{ listing.id }}">
+                                <button type="submit" class="message-seller-btn">Approve</button>
+                            </form>
+
+                            <form method="post" action="/reject/{{ listing.id }}">
+                                <button type="submit" class="message-seller-btn">Reject</button>
+                            </form>
+                        </div>
+                    </div>
+                {% else %}
+                    <p style="text-align: center;">No submitted listings.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section style="width: 90%; max-width: 1000px;">
+            <h2>User Reports</h2>
+
+            {% for report in user_reports %}
+                <div class="review" style="margin-bottom: 1rem;">
+                    <p>
+                        Reported user:
+                        <a href="profile.html?id={{ report.user.id }}">
+                            <strong>{{ report.user.display_name }}</strong>
+                        </a>
+                    </p>
+
+                    <form method="post" action="/resolve-user/{{ report.id }}">
+                        <button type="submit" class="message-seller-btn">Resolve Report</button>
+                    </form>
+                </div>
+            {% else %}
+                <p>No user reports.</p>
+            {% endfor %}
+        </section>
+
+        <section style="width: 90%; max-width: 1000px;">
+            <h2>Listing Reports</h2>
+
+            {% for report in listing_reports %}
+                <div class="review" style="margin-bottom: 1rem;">
+                    <p>
+                        Reported listing:
+                        <a href="/search.html?query={{ report.listing.title | urlencode }}">
+                            <strong>{{ report.listing.title }}</strong>
+                        </a>
+                    </p>
+
+                    <form method="post" action="/resolve-listing/{{ report.id }}">
+                        <button type="submit" class="message-seller-btn">Resolve Report</button>
+                    </form>
+                </div>
+            {% else %}
+                <p>No listing reports.</p>
+            {% endfor %}
+        </section>
+
+        <section style="width: 90%; max-width: 1000px;">
+            <h2>Message Reports</h2>
+
+            {% for report in message_reports %}
+                <div class="review" style="margin-bottom: 1rem;">
+                    <p><strong>Reported message:</strong></p>
+                    <p>{{ report.message.message }}</p>
+
+                    <form method="post" action="/resolve-message/{{ report.id }}">
+                        <button type="submit" class="message-seller-btn">Resolve Report</button>
+                    </form>
+                </div>
+            {% else %}
+                <p>No message reports.</p>
+            {% endfor %}
+        </section>
+
+    </main>
+
+    {% include 'partials/footer-meet-the-team.html' %}
+</body>
+</html>

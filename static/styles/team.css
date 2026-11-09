@@ -1,0 +1,79 @@
+main {
+    /* spacing & orientation */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 50vh;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    margin-bottom: 15%;
+
+    /* aesthetics */
+    background-color: var(--primary-2);
+    border-radius: var(--corner);
+}
+
+h1, h2, h3, h4 {
+    text-align: center;
+}
+
+h2 {
+    color:var(--primary-3);
+}
+
+/* individual team member profiles */
+#profiles-container {
+    display: grid;
+    gap: 2rem;
+    width: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.team-member{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--secondary-2);
+    border-radius: var(--corner);
+    margin: 0;
+    margin-bottom: 5%;
+
+    color: rgba(0,0,0,0.5);
+}
+
+.team-member:hover{
+    opacity: 0.7;
+}
+
+.team-member-photo{
+    border-radius: var(--corner);
+    width: 80%;
+}
+
+.team-member-name, .team-member-role, .team-member-photo {
+    margin: 5%;
+}
+
+/* wide view */
+@media (min-aspect-ratio: 1/1) {
+    main {
+        width: 60vw;
+    }
+    #profiles-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* narrow view */
+@media (max-aspect-ratio: 1/1) {
+    main {
+        width: 90vw;
+    }
+    #profiles-container {
+        grid-template-columns: 1fr;
+    }
+}

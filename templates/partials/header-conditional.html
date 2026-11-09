@@ -1,0 +1,6 @@
+<!-- TODO: if user.logged_in -->
+{% if(logged_in)%}
+    {% include 'partials/header-profile.html' %}
+{% else %}
+    {% include 'partials/header-buttons.html' %}
+{% endif %}

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'partials/google-analytics.html' %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings - GatorGoods</title>
+
+    <link rel="stylesheet" href="../static/styles/main.css">
+    <link rel="stylesheet" href="../static/styles/settings.css">
+</head>
+<body>
+    <header>
+        <a href="index.html">
+            <img src="../static/images/GatorTagLogo.png" id="headerLogo" alt="Logo">
+        </a>
+
+        <a href="profile.html">
+            <img src="{{ current_user.profile_image_path or '../static/images/profile-placeholder.png' }}"
+                 id="headerProfile"
+                 class="circle"
+                 alt="Profile">
+        </a>
+    </header>
+
+    <main id="settings-page">
+        <a href="dashboard.html" id="dashboard-btn">Return to Dashboard</a>
+
+        <section id="settings-panel">
+            <div id="settings-left">
+                <h1 id="profile-settings-title">Profile Settings</h1>
+
+                <form id="profile-form" action="{{ url_for('update_settings') }}" method="post" enctype="multipart/form-data">
+                    <label for="username">Username:</label>
+                    <input id="username"name="display_name" type="text" placeholder="Current Username..."value="{{ current_user.display_name }}">
+
+
+                    <img src="{{ current_user.profile_image_path or '../static/images/profile-placeholder.png' }}"
+                         id="settings-avatar"
+                         alt="Avatar">
+
+                    <button type="button" id="edit-avatar-btn">Edit Picture or Avatar</button>
+                    <input id="profile_image" name="profile_image" type="file" accept="image/*" hidden>
+                    <label for="pronouns">Pronouns:</label>
+                    <input id="pronouns" name="pronouns" type="text" placeholder="example/example..." value="{{ current_user.pronouns or '' }}">
+
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" name="bio" placeholder="Tell us what you are looking for, or what you’re selling">{{ current_user.bio or '' }}</textarea>
+
+                    <button type="submit" id="confirm-btn">Confirm Changes</button>
+                </form>
+            </div>
+
+            <div id="settings-right">
+                <h1>Settings</h1>
+
+                <button class="settings-card" type="button" onclick="openModal('password-modal')">
+                    <div class="settings-text">
+                        <h2>Change Password</h2>
+                        <p>Update your password to keep your account secure.</p>
+                    </div>
+                </button>
+
+                <div class="settings-card toggle-card">
+                    <div class="settings-text">
+                        <h2>Notifications</h2>
+                        <p>Manage your notification preferences.</p>
+                    </div>
+
+                    <label class="switch">
+                        <input type="checkbox" name="notifications_enabled" form="profile-form" {% if current_user.notifications_enabled %}checked{% endif %}>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <button class="settings-card" type="button" onclick="openModal('logout-modal')">
+                    <div class="settings-text">
+                        <h2>Log Out</h2>
+                        <p>Sign out of your account on this device.</p>
+                    </div>
+                </button>
+
+                <button class="settings-card danger-card" type="button" onclick="openModal('delete-modal')">
+                    <div class="settings-text">
+                        <h2>Delete or Deactivate Account</h2>
+                        <p>Permanently delete your account and data or deactivate for wished time period.</p>
+                    </div>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <div id="password-modal" class="modal">
+        <form class="modal-box" action="{{ url_for('update_password') }}" method="post">
+            <button class="close-btn" type="button" onclick="closeModal('password-modal')">×</button>
+            <h2>Change Password</h2>
+
+            <input name="current_password" type="password" placeholder="Current Password">
+            <input name="new_password" type="password" placeholder="New Password">
+            <input name="confirm_password" type="password" placeholder="Confirm New Password">
+
+            <button class="save-btn" type="submit">Save Password</button>
+        </form>
+    </div>
+
+    <div id="logout-modal" class="modal">
+        <form class="modal-box small-modal" action="logout" method="post">
+            <button class="close-btn" type="button" onclick="closeModal('logout-modal')">×</button>
+            <h2>Log Out</h2>
+            <p>Are you sure you want to sign out of your account?</p>
+
+            <div class="modal-actions">
+                <button class="yes-btn" type="submit">Yes</button>
+                <button class="no-btn" type="button" onclick="closeModal('logout-modal')">No</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="delete-modal" class="modal">
+        <div class="modal-box small-modal">
+            <button class="close-btn" type="button" onclick="closeModal('delete-modal')">×</button>
+            <h2>Delete or Deactivate Account</h2>
+            <p>Choose what you would like to do with your account.</p>
+
+            <div class="modal-actions stacked-actions">
+                <form action="{{ url_for('delete_account') }}" method="post">
+                    <button class="delete-btn" type="submit">Delete Account</button>
+                </form>
+
+                <form action="{{ url_for('deactivate_account') }}" method="post">
+                    <button class="deactivate-btn" type="submit">Deactivate Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div>
+            <a href="index.html" class="row">
+                <img src="../static/images/GatorTagLogo.png" id="headerLogo" alt="Logo">
+                <h2 class="whiteText">GatorGoods</h2>
+            </a>
+        </div>
+
+        <h2 class="whiteText">
+            <a href="team.html">Meet the Team</a>
+        </h2>
+    </footer>
+
+    <script>
+        function openModal(id) {
+            document.getElementById(id).classList.add("show-modal");
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove("show-modal");
+        }
+
+        document.getElementById("edit-avatar-btn").addEventListener("click", function () {
+            document.getElementById("profile_image").click();
+        });
+
+    </script>
+</body>
+</html>

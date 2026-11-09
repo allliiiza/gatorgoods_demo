@@ -1,0 +1,192 @@
+<!-- authentication.html -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include 'partials/google-analytics.html' %}
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GatorGoods Authentication</title>
+
+        <link rel="stylesheet" href="static/styles/main.css">
+        <link rel="stylesheet" href="static/styles/authentication.css">
+    </head>
+
+    <body class="auth-body">
+        {% include 'partials/header.html' %}
+
+        <main id="auth-page-layout">
+
+            <section class="listing-showcase-column left-showcase">
+                <div class="showcase-track scroll-down">
+                    {% for listing in left_featured_listings %}
+                        <a href="search.html" class="showcase-card" title="{{ listing.title }}">
+                            <div class="showcase-image">
+                                {% if listing.top_image_path %}
+                                    <img src="{{ listing.top_image_path }}" alt="{{ listing.title }}">
+                                {% endif %}
+                            </div>
+                        </a>
+                    {% endfor %}
+
+                    {% for listing in left_featured_listings %}
+                        <a href="search.html" class="showcase-card" title="{{ listing.title }}">
+                            <div class="showcase-image">
+                                {% if listing.top_image_path %}
+                                    <img src="{{ listing.top_image_path }}" alt="{{ listing.title }}">
+                                {% endif %}
+                            </div>
+                        </a>
+                    {% endfor %}
+
+                    {% for listing in left_featured_listings %}
+                        <a href="search.html" class="showcase-card" title="{{ listing.title }}">
+                            <div class="showcase-image">
+                                {% if listing.top_image_path %}
+                                    <img src="{{ listing.top_image_path }}" alt="{{ listing.title }}">
+                                {% endif %}
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section id="auth-center-column">
+                <div id="auth-card-wrapper">
+
+                    <div id="gator-auth-card">
+
+                        <div class="gator-eye login-eye">
+                            <a
+                                href="authentication.html?mode=login"
+                                class="gator-eye-button {% if mode == 'login' %}active-eye{% endif %}"
+                            >
+                                Log In
+                            </a>
+                        </div>
+
+                        <div class="gator-eye signup-eye">
+                            <a
+                                href="authentication.html?mode=signup"
+                                class="gator-eye-button {% if mode == 'signup' %}active-eye{% endif %}"
+                            >
+                                Sign Up
+                            </a>
+                        </div>
+
+                        {% if mode == 'signup' %}
+                            <form class="auth-form signup-form" method="post" action="/signup" novalidate>
+
+                                <div class="form-field">
+                                    <input type="email" id="signup-email" name="email" placeholder="Email" value="{{ email if email else '' }}" required>
+                                    <p class="field-error">Email is required.</p>
+                                </div>
+
+                                <div class="form-field">
+                                    <input type="text" id="signup-display-name" name="display_name" placeholder="Display Name" value="{{ display_name if display_name else '' }}" required>
+                                    <p class="field-error">Display name is required.</p>
+                                </div>
+
+                                <div class="form-field">
+                                    <input type="password" id="signup-password" name="password" placeholder="Password" required>
+                                    <p class="field-error">Password is required.</p>
+                                </div>
+
+                                <div class="form-field">
+                                    <input type="password" id="signup-confirm-password" name="confirm_password" placeholder="Confirm Password" required>
+                                    <p class="field-error">Confirm password is required.</p>
+                                </div>
+
+                                {% if msg %}
+                                    <p class="auth-message">{{ msg }}</p>
+                                {% endif %}
+
+                                <button type="submit" class="gator-submit-btn">Sign Up</button>
+                            </form>
+                        {% else %}
+                            <form class="auth-form login-form" method="post" action="/login" novalidate>
+
+                                <div class="form-field">
+                                    <input type="email" id="login-email" name="email" placeholder="Email" value="{{ email if email else '' }}" required>
+                                    <p class="field-error">Email is required.</p>
+                                </div>
+
+                                <div class="form-field">
+                                    <input type="password" id="login-password" name="password" placeholder="Password" required>
+                                    <p class="field-error">Password is required.</p>
+                                </div>
+
+                                {% if msg %}
+                                    <p class="auth-message">{{ msg }}</p>
+                                {% endif %}
+
+                                <a href="#" id="forgot-password-link">Forgot Password?</a>
+
+                                <button type="submit" class="gator-submit-btn">Log In</button>
+                            </form>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </section>
+
+            <section class="listing-showcase-column right-showcase">
+                <div class="showcase-track scroll-up">
+                    {% for listing in right_featured_listings %}
+                        <a href="search.html" class="showcase-card" title="{{ listing.title }}">
+                            <div class="showcase-image">
+                                {% if listing.top_image_path %}
+                                    <img src="{{ listing.top_image_path }}" alt="{{ listing.title }}">
+                                {% endif %}
+                            </div>
+                        </a>
+                    {% endfor %}
+
+                    {% for listing in right_featured_listings %}
+                        <a href="search.html" class="showcase-card" title="{{ listing.title }}">
+                            <div class="showcase-image">
+                                {% if listing.top_image_path %}
+                                    <img src="{{ listing.top_image_path }}" alt="{{ listing.title }}">
+                                {% endif %}
+                            </div>
+                        </a>
+                    {% endfor %}
+
+                    {% for listing in right_featured_listings %}
+                        <a href="search.html" class="showcase-card" title="{{ listing.title }}">
+                            <div class="showcase-image">
+                                {% if listing.top_image_path %}
+                                    <img src="{{ listing.top_image_path }}" alt="{{ listing.title }}">
+                                {% endif %}
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </section>
+
+        </main>
+
+        {% include 'partials/footer-meet-the-team.html' %}
+
+        <script>
+            document.querySelectorAll(".auth-form").forEach(function (form) {
+                form.addEventListener("submit", function (event) {
+                    let inputs = form.querySelectorAll("input[required]");
+                    let formIsValid = true;
+
+                    inputs.forEach(function (input) {
+                        input.classList.add("touched");
+
+                        if (!input.checkValidity()) {
+                            formIsValid = false;
+                        }
+                    });
+
+                    if (!formIsValid) {
+                        event.preventDefault();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
